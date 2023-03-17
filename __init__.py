@@ -413,7 +413,7 @@ class openHABSkill(MycroftSkill):
         command = message.data.get('Command')
 
         if command == 'Hilfe':
-            ohItem = self.findItemName(self.helpItemsDic, 'critical_help_button')
+            ohItem = self.findItemName(self.helpItemsDic, 'Hole Hilfe Kritisch')
             if ohItem is not None:
                 statusCode = self.sendCommandToItem(ohItem, 'On')
                 if statusCode == 200:
@@ -429,7 +429,7 @@ class openHABSkill(MycroftSkill):
                 self.speak_dialog('ItemNotFoundError')
 
         elif command == 'Unterstützung':
-            ohItem = self.findItemName(self.helpItemsDic, 'help_button_normal')
+            ohItem = self.findItemName(self.helpItemsDic, 'Hole Unterstützung')
             if ohItem != None:
                 statusCode = self.sendCommandToItem(ohItem, 'On')
                 if statusCode == 200:
