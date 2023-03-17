@@ -101,6 +101,9 @@ class openHABSkill(MycroftSkill):
         list_items_intent = IntentBuilder("ListItemsIntent").require("ListItemsKeyword").build()
         self.register_intent(list_items_intent, self.handle_list_items_intent)
 
+        help_status_intent = IntentBuilder("Help_StatusIntent").require("Command").build()
+        self.register_intent(help_status_intent, self.handle_help_status_intent)
+
         self.settings_change_callback = self.handle_websettings_update
 
     def get_config(self, key):
@@ -406,15 +409,13 @@ class openHABSkill(MycroftSkill):
             LOGGER.error("Item not found!")
             self.speak_dialog('ItemNotFoundError')
 
-    # Don't know why, but this is working better. Otherwise sometimes the command or item is empty.
-    @intent_handler(IntentBuilder("help_status_intent").require("Command").build())
     def handle_help_status_intent(self, message):
         command = message.data.get('Command')
 
-        if command == "Hilfe":
-            ohItem = self.findItemName(self.helpItemsDic, "critical_help_button")
+        if command == 'Hilfe':
+            ohItem = self.findItemName(self.helpItemsDic, 'critical_help_button')
             if ohItem is not None:
-                statusCode = self.sendCommandToItem(ohItem, "On")
+                statusCode = self.sendCommandToItem(ohItem, 'On')
                 if statusCode == 200:
                     self.speak_dialog('StatusHelp', {'command': command})
                 elif statusCode == 404:
@@ -427,10 +428,10 @@ class openHABSkill(MycroftSkill):
                 LOGGER.error("Item not found!")
                 self.speak_dialog('ItemNotFoundError')
 
-        elif command == "Unterstützung":
-            ohItem = self.findItemName(self.helpItemsDic, "help_button_normal")
+        elif command == 'Unterstützung':
+            ohItem = self.findItemName(self.helpItemsDic, 'help_button_normal')
             if ohItem != None:
-                statusCode = self.sendCommandToItem(ohItem, "On")
+                statusCode = self.sendCommandToItem(ohItem, 'On')
                 if statusCode == 200:
                     self.speak_dialog('StatusHelp', {'command': command})
                 elif statusCode == 404:
