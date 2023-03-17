@@ -412,8 +412,9 @@ class openHABSkill(MycroftSkill):
     def handle_help_status_intent(self, message):
         command = message.data.get('Command')
 
-        if command == 'Hilfe':
+        if command == "Hilfe":
             ohItem = self.findItemName(self.helpItemsDic, 'Hole Hilfe Kritisch')
+            self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem is not None:
                 statusCode = self.sendCommandToItem(ohItem, 'On')
                 if statusCode == 200:
@@ -428,8 +429,9 @@ class openHABSkill(MycroftSkill):
                 LOGGER.error("Item not found!")
                 self.speak_dialog('ItemNotFoundError')
 
-        elif command == 'Unterstützung':
+        elif command == "Unterstützung":
             ohItem = self.findItemName(self.helpItemsDic, 'Hole Unterstützung')
+            self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem != None:
                 statusCode = self.sendCommandToItem(ohItem, 'On')
                 if statusCode == 200:
