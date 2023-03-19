@@ -101,8 +101,8 @@ class openHABSkill(MycroftSkill):
         list_items_intent = IntentBuilder("ListItemsIntent").require("ListItemsKeyword").build()
         self.register_intent(list_items_intent, self.handle_list_items_intent)
 
-        help_status_intent = IntentBuilder("Help_StatusIntent").require("Command").build()
-        self.register_intent(help_status_intent, self.handle_help_status_intent)
+        # help_status_intent = IntentBuilder("Help_StatusIntent").require("Command").build()
+        # self.register_intent(help_status_intent, self.handle_help_status_intent)
 
         self.settings_change_callback = self.handle_websettings_update
 
@@ -409,6 +409,7 @@ class openHABSkill(MycroftSkill):
             LOGGER.error("Item not found!")
             self.speak_dialog('ItemNotFoundError')
 
+    @intent_handler(IntentBuilder("help_status_intent").require("HelpStatusKeyword").require("Command").build())
     def handle_help_status_intent(self, message):
         command = message.data.get('Command')
 
@@ -416,7 +417,7 @@ class openHABSkill(MycroftSkill):
             ohItem = self.findItemName(self.helpItemsDic, 'Hole Hilfe Kritisch')
             #self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem is not None:
-                statusCode = self.sendCommandToItem(ohItem, 'ON')
+                statusCode = self.sendCommandToItem(ohItem, "ON")
                 if statusCode == 200:
                     self.speak_dialog('StatusHelp', {'command': command})
                 elif statusCode == 404:
@@ -433,7 +434,7 @@ class openHABSkill(MycroftSkill):
             ohItem = self.findItemName(self.helpItemsDic, 'Hole Unterstützung')
             #self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem != None:
-                statusCode = self.sendCommandToItem(ohItem, 'ON')
+                statusCode = self.sendCommandToItem(ohItem, "ON")
                 if statusCode == 200:
                     self.speak_dialog('StatusHelp', {'command': command})
                 elif statusCode == 404:
