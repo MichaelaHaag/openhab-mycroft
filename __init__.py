@@ -276,6 +276,30 @@ class openHABSkill(MycroftSkill):
             LOGGER.error("Item not found!")
             self.speak_dialog('ItemNotFoundError')
 
+    @intent_handler(IntentBuilder("HolHilfeZweiIntent").require("help_command").require("Hilfe"))
+    def handle_hilfe_zwei(self, message):
+        command = message.data.get('Command')
+
+        if command == "Hilfe":
+            ohItem = self.findItemName(self.helpItemsDic, 'Hole Hilfe Kritisch')
+            #self.speak_dialog('FoundItems', {'items': str(ohItem)})
+            if ohItem is not None:
+                statusCode = self.sendCommandToItem(ohItem, 'ON')
+                if statusCode == 200:
+                    self.speak_dialog('StatusHelp', {'command': command})
+                elif statusCode == 404:
+                    LOGGER.error("Some issues with the command execution!. Item not found")
+                    self.speak_dialog('ItemNotFoundError')
+                else:
+                    LOGGER.error("Some issues with the command execution!")
+                    self.speak_dialog('CommunicationError')
+            else:
+                LOGGER.error("Item not found!")
+                self.speak_dialog('ItemNotFoundError')
+
+        else:
+            self.speak_dialog('ErrorDialog')
+
     @intent_handler(IntentBuilder("Dimmer_StatusIntent").require("DimmerStatusKeyword").require("Item").optionally("BrightPercentage").build())
     def handle_dimmer_status_intent(self, message):
         command = message.data.get('DimmerStatusKeyword')
@@ -430,8 +454,8 @@ class openHABSkill(MycroftSkill):
                 LOGGER.error("Item not found!")
                 self.speak_dialog('ItemNotFoundError')
 
-        elif command == "Unterstützung":
-            ohItem = self.findItemName(self.helpItemsDic, 'Hole Unterstützung')
+        elif command == "Unterstï¿½tzung":
+            ohItem = self.findItemName(self.helpItemsDic, 'Hole Unterstï¿½tzung')
             #self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem != None:
                 statusCode = self.sendCommandToItem(ohItem, "ON")
