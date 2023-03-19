@@ -414,9 +414,9 @@ class openHABSkill(MycroftSkill):
 
         if command == "Hilfe":
             ohItem = self.findItemName(self.helpItemsDic, 'Hole Hilfe Kritisch')
-            self.speak_dialog('FoundItems', {'items': str(ohItem)})
+            #self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem is not None:
-                statusCode = self.sendCommandToItem(ohItem, 'On')
+                statusCode = self.sendCommandToItem(ohItem, 'ON')
                 if statusCode == 200:
                     self.speak_dialog('StatusHelp', {'command': command})
                 elif statusCode == 404:
@@ -431,9 +431,9 @@ class openHABSkill(MycroftSkill):
 
         elif command == "Unterstützung":
             ohItem = self.findItemName(self.helpItemsDic, 'Hole Unterstützung')
-            self.speak_dialog('FoundItems', {'items': str(ohItem)})
+            #self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem != None:
-                statusCode = self.sendCommandToItem(ohItem, 'On')
+                statusCode = self.sendCommandToItem(ohItem, 'ON')
                 if statusCode == 200:
                     self.speak_dialog('StatusHelp', {'command': command})
                 elif statusCode == 404:
