@@ -276,29 +276,29 @@ class openHABSkill(MycroftSkill):
             LOGGER.error("Item not found!")
             self.speak_dialog('ItemNotFoundError')
 
-    @intent_handler(IntentBuilder("HolHilfeZweiIntent").require("help_command").require("Hilfe"))
-    def handle_hilfe_zwei(self, message):
-        command = message.data.get('Command')
-
-        if command == "Hilfe":
-            ohItem = self.findItemName(self.helpItemsDic, 'Hole Hilfe Kritisch')
-            #self.speak_dialog('FoundItems', {'items': str(ohItem)})
-            if ohItem is not None:
-                statusCode = self.sendCommandToItem(ohItem, 'ON')
-                if statusCode == 200:
-                    self.speak_dialog('StatusHelp', {'command': command})
-                elif statusCode == 404:
-                    LOGGER.error("Some issues with the command execution!. Item not found")
-                    self.speak_dialog('ItemNotFoundError')
-                else:
-                    LOGGER.error("Some issues with the command execution!")
-                    self.speak_dialog('CommunicationError')
-            else:
-                LOGGER.error("Item not found!")
-                self.speak_dialog('ItemNotFoundError')
-
-        else:
-            self.speak_dialog('ErrorDialog')
+    # @intent_handler(IntentBuilder("HolHilfeZweiIntent").require("help_command").require("Hilfe"))
+    # def handle_hilfe_zwei(self, message):
+    #     command = message.data.get('Command')
+    #
+    #     if command == "Hilfe":
+    #         ohItem = self.findItemName(self.helpItemsDic, 'Hole Hilfe Kritisch')
+    #         #self.speak_dialog('FoundItems', {'items': str(ohItem)})
+    #         if ohItem is not None:
+    #             statusCode = self.sendCommandToItem(ohItem, 'ON')
+    #             if statusCode == 200:
+    #                 self.speak_dialog('StatusHelp', {'command': command})
+    #             elif statusCode == 404:
+    #                 LOGGER.error("Some issues with the command execution!. Item not found")
+    #                 self.speak_dialog('ItemNotFoundError')
+    #             else:
+    #                 LOGGER.error("Some issues with the command execution!")
+    #                 self.speak_dialog('CommunicationError')
+    #         else:
+    #             LOGGER.error("Item not found!")
+    #             self.speak_dialog('ItemNotFoundError')
+    #
+    #     else:
+    #         self.speak_dialog('ErrorDialog')
 
     @intent_handler(IntentBuilder("Dimmer_StatusIntent").require("DimmerStatusKeyword").require("Item").optionally("BrightPercentage").build())
     def handle_dimmer_status_intent(self, message):
@@ -437,8 +437,9 @@ class openHABSkill(MycroftSkill):
     def handle_help_status_intent(self, message):
         command = message.data.get('Command')
         openhabCmd = "on"
+        self.speak_dialog('Status')
 
-        if command == "Hilfe":
+        if self.voc_match(command, 'Help'):
             ohItem = self.findItemName(self.helpItemsDic, 'Hole Hilfe Kritisch')
             #self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem is not None:
@@ -455,7 +456,7 @@ class openHABSkill(MycroftSkill):
                 LOGGER.error("Item not found!")
                 self.speak_dialog('ItemNotFoundError')
 
-        elif command == "Unterstutzung":
+        elif self.voc_match(command, 'Support'):
             ohItem = self.findItemName(self.helpItemsDic, 'Hole Unterstutzung')
             #self.speak_dialog('FoundItems', {'items': str(ohItem)})
             if ohItem != None:
